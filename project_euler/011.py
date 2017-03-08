@@ -43,7 +43,27 @@ for i in range(21 - mult_count):
             prod_candidate_horz *= grid[i][j + k]
             prod_candidate_diag *= grid[i + k][j + k]
         max_prod = max(max_prod, prod_candidate_horz, prod_candidate_vert, prod_candidate_diag)
-        print(i+1, j+1, max_prod)
+
+for i in range(17, 20):
+    for j in range(21 - mult_count):
+        prod_candidate_horz = 1
+        for k in range(mult_count):
+            prod_candidate_horz *= grid[i][j + k]
+        max_prod = max(max_prod, prod_candidate_horz)
+
+for i in range(21 - mult_count):
+    for j in range(17, 20):
+        prod_candidate_vert = 1
+        for k in range(mult_count):
+            prod_candidate_vert *= grid[i + k][j]
+        max_prod = max(max_prod, prod_candidate_vert)
+
+for i in range(19, mult_count-2, -1):
+    for j in range(21 - mult_count):
+        prod_candidate_diag = 1
+        for k in range(mult_count):
+            prod_candidate_diag *= grid[i - k][j + k]
+        max_prod = max(max_prod, prod_candidate_diag)
 
 end_time = time()
 
