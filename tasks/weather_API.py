@@ -82,7 +82,7 @@ def pretty_weather(verbosity):
         )
     if verbosity >= 2:
         weather_str += ', {}% humidity'.format(weather['main']['humidity'])
-        weather_str += ', {} mmHg'.format(weather['main']['pressure'])
+        weather_str += ', {} hPa'.format(weather['main']['pressure'])
     return weather_str
 
 
