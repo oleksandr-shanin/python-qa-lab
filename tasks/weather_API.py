@@ -22,7 +22,8 @@ def get_current_location():
 
 
 def get_weather_by_coord(lat, lon, appid):
-    weather_link = 'http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={appid}'.format(lat=lat, lon=lon, appid=appid)
+    weather_link = 'http://api.openweathermap.org/data/2.5/weather?units=metric&lat={lat}&lon={lon}&appid={appid}'.format(
+        lat=lat, lon=lon, appid=appid)
     return json.loads(requests.get(weather_link).content)
 
 
@@ -73,16 +74,22 @@ def pretty_weather(verbosity):
     weather = get_weather_by_coord(location['lat'], location['lon'], appid)
     weather_str = ''
     weather_str += '{}, '.format(weather['name'])
-    weather_str += '{:5.1f}°C'.format(weather['main']['temp'] - 273.15)
+    weather_str += '{:5.1f}°C'.format(weather['main']['temp'])
     if verbosity >= 1:
         weather_str += ', {}'.format(weather['weather'][0]['description'])
-        weather_str += ', wind {direct}, {speed:4.1f} m/s'.format(
-            direct=cardinal_wind(weather['wind']['deg']),
-            speed=weather['wind']['speed']
-        )
+        try:
+            weather_str += ', wind {direct}, {speed:4.1f} m/s'.format(
+                direct=cardinal_wind(weather['wind']['deg']),
+                speed=weather['wind']['speed']
+            )
+        except KeyError:
+            weather_str += ', wind {speed:4.1f} m/s'.format(
+                speed=weather['wind']['speed']
+            )
     if verbosity >= 2:
         weather_str += ', {}% humidity'.format(weather['main']['humidity'])
         weather_str += ', {} hPa'.format(weather['main']['pressure'])
+        weather_str += ', {}% of cloud coverage'.format(weather['clouds']['all'])
     return weather_str
 
 
